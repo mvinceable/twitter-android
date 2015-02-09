@@ -7,8 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,6 +93,9 @@ public class ComposeActivity extends ActionBarActivity {
         });
 
         updateActionBarControls();
+
+        // Add back button
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     // Updates character count and sets state of tweet button

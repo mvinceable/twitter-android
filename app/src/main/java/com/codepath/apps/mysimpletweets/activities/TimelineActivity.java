@@ -105,6 +105,9 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 swipeContainer.setRefreshing(false);
                 Toast.makeText(TimelineActivity.this, "Failed loading more tweets", Toast.LENGTH_SHORT).show();
+                if (errorResponse != null) {
+                    Log.d("DEBUG", errorResponse.toString());
+                }
             }
         });
     }
@@ -132,6 +135,9 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 swipeContainer.setRefreshing(false);
                 Toast.makeText(TimelineActivity.this, "Failed populating timeline", Toast.LENGTH_SHORT).show();
+                if (errorResponse != null) {
+                    Log.d("DEBUG", errorResponse.toString());
+                }
             }
         });
     }

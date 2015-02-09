@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".TwitterApplication"
@@ -49,6 +49,7 @@
         </activity>
         <activity
             android:name=".activities.TimelineActivity"
+            android:launchMode="singleTop"
             android:label="@string/title_activity_timeline" >
         </activity>
         <activity
@@ -62,7 +63,11 @@
         </activity>
         <activity
             android:name=".activities.TweetDetailsActivity"
-            android:label="@string/title_activity_tweet_details" >
+            android:label="@string/title_activity_tweet_details"
+            android:parentActivityName=".activities.TimelineActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.codepath.apps.mysimpletweets.activities.TimelineActivity" />
         </activity>
     </application>
 

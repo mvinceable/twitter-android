@@ -3,13 +3,8 @@ package com.codepath.apps.mysimpletweets.activities;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +55,9 @@ public class TweetDetailsActivity extends ActionBarActivity {
         Picasso.with(this).load(i.getStringExtra("profileImageUrl")).into(ivProfileImage);
         tvBody.setText(i.getStringExtra("body"));
         tvTime.setText(i.getStringExtra("time"));
+
+        // Add back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

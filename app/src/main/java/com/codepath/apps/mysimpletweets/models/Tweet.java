@@ -1,7 +1,5 @@
 package com.codepath.apps.mysimpletweets.models;
 
-import android.content.ClipData;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -11,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,7 +90,7 @@ public class Tweet extends Model {
         ArrayList<Tweet> tweets = new ArrayList<>();
         // Iterate the json array and create tweets
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject tweetJson = null;
+            JSONObject tweetJson;
             try {
                 tweetJson = jsonArray.getJSONObject(i);
                 Tweet tweet = Tweet.fromJSON(tweetJson);
@@ -154,7 +151,7 @@ public class Tweet extends Model {
     }
 
     public static List<Tweet> getStoredTweets() {
-        return new Select().from(Tweet.class).orderBy("uid ASC").execute();
+        return new Select().from(Tweet.class).orderBy("uid DESC").execute();
     }
 
     // Returns time for detailed view

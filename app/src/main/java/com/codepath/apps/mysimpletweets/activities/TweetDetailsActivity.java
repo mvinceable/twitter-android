@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets.activities;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -56,8 +57,12 @@ public class TweetDetailsActivity extends ActionBarActivity {
         tvBody.setText(i.getStringExtra("body"));
         tvTime.setText(i.getStringExtra("time"));
 
-        // Add back button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Setup ActionBar
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.drawable.ic_logo_twitter);
+        actionBar.setDisplayUseLogoEnabled(true);
     }
 
 
@@ -101,6 +106,9 @@ public class TweetDetailsActivity extends ActionBarActivity {
                 i.putExtra("replyToUserName", userName);
                 startActivityForResult(i, COMPOSE_REQUEST_CODE);
             }
+        } else if (id == android.R.id.home) {
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

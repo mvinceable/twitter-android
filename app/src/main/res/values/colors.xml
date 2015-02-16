@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="twitter_primary">#55ACEE</color>
+    <color name="tab_underline">#77CEFF</color>
     <color name="white">#FFFFFF</color>
     <color name="light_gray">#AAAAAA</color>
-    <color name="lighter_gray">#EEEEEE</color>
+    <color name="lighter_gray">#CCCCCC</color>
+    <color name="lightest_gray">#EEEEEE</color>
     <color name="black">#000000</color>
     <color name="link">#0084B4</color>
 </resources>

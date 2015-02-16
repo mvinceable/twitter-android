@@ -19,5 +19,7 @@
         android:layout_alignParentEnd="true"
         android:gravity="top"
         android:hint="@string/hint_whats_happening"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/black" />
 </RelativeLayout>

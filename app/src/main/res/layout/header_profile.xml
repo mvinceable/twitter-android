@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/light_gray">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivProfileBanner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:layout_above="@+id/llCounts" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivProfileImage"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:padding="3dp"
+        android:layout_marginBottom="3dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First Last"
+        android:id="@+id/tvName"
+        android:layout_below="@+id/ivProfileImage"
+        android:layout_centerHorizontal="true"
+        android:textSize="16sp"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\@username"
+        android:id="@+id/tvUserName"
+        android:layout_below="@+id/tvName"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginBottom="12dp" />
+
+    <LinearLayout
+        android:id="@+id/llCounts"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvUserName"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="5,707"
+            android:id="@+id/tvTweets"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="0dp"
+            android:paddingRight="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/lightest_gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="1,052"
+            android:id="@+id/tvFollowing"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="0dp"
+            android:paddingRight="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/lightest_gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="54.4K"
+            android:id="@+id/tvFollowers"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="0dp"
+            android:paddingRight="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/llCounts"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/count_tweets"
+            android:id="@+id/textView"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/lightest_gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/count_following"
+            android:id="@+id/textView2"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/lightest_gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/count_followers"
+            android:id="@+id/textView3"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</RelativeLayout>

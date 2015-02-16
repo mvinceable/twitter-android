@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.codepath.apps.mysimpletweets.activities.TimelineActivity;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.squareup.picasso.Picasso;
@@ -52,6 +50,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         tvBody.setText(tweet.getBody());
         ivProfileImage.setImageResource(android.R.color.transparent); // clear out the old image for a recycled view
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.showProfile(tweet.getUser());
+                }
+            }
+        });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,5 +76,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     public interface TweetDetailsCallback {
         public void showDetails(Tweet tweet);
+        public void showProfile(User user);
     }
 }

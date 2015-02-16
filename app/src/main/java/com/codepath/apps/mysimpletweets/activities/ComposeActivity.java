@@ -32,8 +32,9 @@ public class ComposeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
         etBody = (EditText) findViewById(R.id.etBody);
-        // Remove the under bar from the EditText
+        // Remove the under bar from the EditText and make hint lighter
         etBody.setBackground(null);
+        etBody.setHintTextColor(getResources().getColor(R.color.lighter_gray));
 
         // There are extras if this is a reply
         String replyToUserName = getIntent().getStringExtra("replyToUserName");
@@ -105,7 +106,7 @@ public class ComposeActivity extends ActionBarActivity {
         // Update button state depending on text
         if (count < 0 || count == 140) {
             btnTweet.setEnabled(false);
-            btnTweet.setTextColor(Color.parseColor("#CCCCCC"));
+            btnTweet.setTextColor(getResources().getColor(R.color.tab_underline));
         } else {
             btnTweet.setEnabled(true);
             btnTweet.setTextColor(Color.parseColor("white"));

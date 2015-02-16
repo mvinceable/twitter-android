@@ -36,6 +36,8 @@ public class Tweet extends Model {
     private final String TWITTER_DATE_FORMAT = "EEE MMM d HH:mm:ss Z y";
     // 9:25 PM - 08 Feb 15
     private final String TWEET_DETAILS_DATE_FORMAT = "h:mm a - dd MMM yy";
+    // "2/15/15"
+    private final String TWEET_RELATIVE_LONG_FORMAT = "dd MMM yy";
 
     public Tweet() {
         super();
@@ -108,15 +110,17 @@ public class Tweet extends Model {
 
     // Returns relative string from created_time
     public String getRelativeCreatedTime() {
-        return getRelativeTime(createdAt);
+        return getRelativeTime(this.createdAt);
     }
 
     // Returns relative time from time {
     public String getRelativeTime(String time) {
         SimpleDateFormat sdf = new SimpleDateFormat(TWITTER_DATE_FORMAT);
         Long secondsSince;
+        Date d;
+
         try {
-            Date d = sdf.parse(time);
+            d = sdf.parse(time);
             secondsSince = (new Date().getTime() - d.getTime())/1000;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -125,7 +129,7 @@ public class Tweet extends Model {
 
         if (secondsSince >= 86400) {
             // show month, day, and year
-            return new SimpleDateFormat("M/d/yy").format(time);
+            return new SimpleDateFormat(TWEET_RELATIVE_LONG_FORMAT).format(d);
         } else if (secondsSince >= 3600) {
             // show hours
             return String.valueOf(secondsSince/3600) + "h";

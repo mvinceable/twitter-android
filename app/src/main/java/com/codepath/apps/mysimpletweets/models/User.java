@@ -90,7 +90,12 @@ public class User extends Model {
             u.followersCount = json.getInt("followers_count");
             u.friendsCount = json.getInt("friends_count");
             if (json.has("profile_banner_url")) {
-                u.profileBannerUrl = json.getString("profile_banner_url");
+                // User mobile retina version (640x320)
+                // https://dev.twitter.com/overview/general/user-profile-images-and-banners
+                u.profileBannerUrl = json.getString("profile_banner_url") + "/mobile_retina";
+            } else if (json.has("profile_background_image_url")) {
+                // User profile background image instead
+                u.profileBannerUrl = json.getString("profile_background_image_url");
             }
             u.statusesCount = json.getInt("statuses_count");
         } catch (JSONException e) {

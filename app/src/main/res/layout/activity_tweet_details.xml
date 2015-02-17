@@ -16,7 +16,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="10dp"
+        android:onClick="showProfile"
+        android:clickable="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,13 +71,120 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:textColor="@color/light_gray"
-        android:fontFamily="sans-serif-light" />
+        android:fontFamily="sans-serif-light"
+        android:textSize="14sp" />
 
     <View
         android:id="@+id/vSeparator"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/tvTime"
-        android:background="@color/lightest_gray"/>
+        android:background="@color/lightest_gray"
+        android:layout_marginBottom="10dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/llCounts"
+        android:layout_below="@+id/vSeparator"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:id="@+id/tvRetweets"
+            android:textSize="12sp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/count_retweets"
+            android:id="@+id/textView6"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="12dp"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/light_gray"
+            android:textIsSelectable="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:id="@+id/tvFavorites" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/count_favorites"
+            android:id="@+id/textView5"
+            android:layout_marginLeft="4dp"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/light_gray" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/llCounts"
+        android:background="@color/lightest_gray"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/vSeparator2" />
+
+    <LinearLayout
+        android:id="@+id/llActions"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vSeparator2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/ibReply"
+            android:background="@drawable/reply"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="20dp"
+            android:onClick="onReply" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/ibRetweet"
+            android:background="@drawable/retweet"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:onClick="onRetweet" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/ibFavorite"
+            android:background="@drawable/favorite"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="12dp"
+            android:onClick="onFavorite" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/llActions"
+        android:background="@color/lightest_gray"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/vSeparator3" />
 
 </RelativeLayout>

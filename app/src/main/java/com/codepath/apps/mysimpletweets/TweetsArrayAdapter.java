@@ -32,6 +32,16 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     public View getView(int position, View convertView, ViewGroup parent) {
         // 1. Get the tweet
         final Tweet tweet = getItem(position);
+        final Tweet tweetToDisplay;
+        User currentUser = User.getCurrentUser();
+
+        // If it's a retweeted tweet, display the original
+        if (tweet.getRetweetedStatus() != null) {
+            tweetToDisplay = tweet.getRetweetedStatus();
+        } else {
+            tweetToDisplay = tweet;
+        }
+
         // 2. Find or inflate the template
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
@@ -42,19 +52,57 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
         TextView tvTime = (TextView) convertView.findViewById(R.id.tvTime);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
-        User u = tweet.getUser();
+        TextView tvReply = (TextView) convertView.findViewById(R.id.tvReply);
+        final TextView tvRetweet = (TextView) convertView.findViewById(R.id.tvRetweet);
+        final TextView tvFavorite = (TextView) convertView.findViewById(R.id.tvFavorite);
+        TextView tvRetweeted = (TextView) convertView.findViewById(R.id.tvRetweeted);
+
+        User u = tweetToDisplay.getUser();
         // 4. Populate data into the subviews
         tvName.setText(u.getName());
         tvUserName.setText("@" + u.getScreenName());
-        tvTime.setText(tweet.getRelativeCreatedTime());
-        tvBody.setText(tweet.getBody());
+        tvTime.setText(tweetToDisplay.getRelativeCreatedTime());
+        tvBody.setText(tweetToDisplay.getBody());
         ivProfileImage.setImageResource(android.R.color.transparent); // clear out the old image for a recycled view
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        Picasso.with(getContext()).load(tweetToDisplay.getUser().getProfileImageUrl()).into(ivProfileImage);
+        tvRetweet.setText(String.valueOf(tweetToDisplay.getRetweetCount()));
+        tvFavorite.setText(String.valueOf(tweetToDisplay.getFavoriteCount()));
+
+        // Current user has retweeted
+        setRetweetState(tweet.isRetweeted(), tvRetweet);
+
+        // Someone has retweeted
+        if (tweet.getRetweetedStatus() != null) {
+            tvRetweeted.setText(tweet.getUser().getName() + " retweeted");
+            tvRetweeted.setVisibility(View.VISIBLE);
+        } else {
+            tvRetweeted.setVisibility(View.GONE);
+        }
+
+        // Current user favorited
+        if (tweet.isFavorited()) {
+            tvFavorite.setTextColor(getContext().getResources().getColor(R.color.favorited));
+            tvFavorite.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.favorite_on, //left
+                0, //top
+                0, //right
+                0//bottom
+            );
+        } else {
+            tvFavorite.setTextColor(getContext().getResources().getColor(R.color.light_gray));
+            tvFavorite.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.favorite, //left
+                0, //top
+                0, //right
+                0//bottom
+            );
+        }
+
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (callback != null) {
-                    callback.showProfile(tweet.getUser());
+                    callback.showProfile(tweetToDisplay.getUser());
                 }
             }
         });
@@ -62,12 +110,97 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             @Override
             public void onClick(View v) {
                 if (callback != null) {
-                    callback.showDetails(tweet);
+                    callback.showDetails(tweetToDisplay);
                 }
+            }
+        });
+        tvReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.onReply(tweetToDisplay);
+                }
+            }
+        });
+
+        // Tweet is current user's; this is flaky as currentUser may not be defined yet
+        if (currentUser != null && currentUser.getScreenName().equals(tweetToDisplay.getUser().getScreenName())) {
+            tvRetweet.setAlpha((float)0.25);
+            tvRetweet.setText("");
+        } else {
+            tvRetweet.setAlpha((float)1);
+            tvRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setRetweetState(!tweet.isRetweeted(), tvRetweet);
+                    if (callback != null) {
+                        // For destroying tweet, must supply original so retweetId is valid
+                        callback.onRetweet(tweet);
+                    }
+                    updateRetweetCount(tvRetweet, tweet);
+                }
+            });
+        }
+        tvFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFavoriteState(!tweetToDisplay.isFavorited(), tvFavorite);
+                if (callback != null) {
+                    callback.onFavorite(tweetToDisplay);
+                }
+                updateFavoriteCount(tvFavorite, tweetToDisplay);
             }
         });
         // 5. Return the view to be inserted into the list
         return convertView;
+    }
+
+    private void updateRetweetCount(TextView tvRetweet, Tweet tweetToDisplay) {
+        tvRetweet.setText(String.valueOf(tweetToDisplay.getRetweetCount()));
+    }
+
+    private void updateFavoriteCount(TextView tvFavorite, Tweet tweetToDisplay) {
+        tvFavorite.setText(String.valueOf(tweetToDisplay.getFavoriteCount()));
+    }
+
+    private void setRetweetState(boolean on, TextView tvRetweet) {
+        if (on) {
+            tvRetweet.setTextColor(getContext().getResources().getColor(R.color.retweeted));
+            tvRetweet.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.retweet_on, //left
+                    0, //top
+                    0, //right
+                    0//bottom
+            );
+        } else {
+            tvRetweet.setTextColor(getContext().getResources().getColor(R.color.light_gray));
+            tvRetweet.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.retweet, //left
+                    0, //top
+                    0, //right
+                    0//bottom
+            );
+        }
+    }
+
+    private void setFavoriteState(boolean on, TextView tvFavorite) {
+        if (on) {
+            tvFavorite.setTextColor(getContext().getResources().getColor(R.color.favorited));
+            tvFavorite.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.favorite_on, //left
+                    0, //top
+                    0, //right
+                    0//bottom
+            );
+        } else {
+            tvFavorite.setTextColor(getContext().getResources().getColor(R.color.light_gray));
+            tvFavorite.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.favorite, //left
+                    0, //top
+                    0, //right
+                    0//bottom
+            );
+        }
     }
 
     public void setCallback(TweetDetailsCallback callback){
@@ -77,5 +210,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     public interface TweetDetailsCallback {
         public void showDetails(Tweet tweet);
         public void showProfile(User user);
+        public void onReply(Tweet tweet);
+        public void onRetweet(Tweet tweet);
+        public void onFavorite(Tweet tweet);
     }
 }

@@ -6,11 +6,23 @@
     android:paddingTop="5dp"
     android:paddingBottom="10dp">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="someone retweeted"
+        android:id="@+id/tvRetweeted"
+        android:drawableLeft="@drawable/retweet"
+        android:drawablePadding="9dp"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/light_gray"
+        android:textSize="12sp"
+        android:layout_marginLeft="38dp" />
+
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/ivProfileImage"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/tvRetweeted"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginRight="10dp"
@@ -21,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="First Last"
         android:id="@+id/tvName"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/tvRetweeted"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_toEndOf="@+id/tvBody"
         android:layout_marginRight="5dp"
@@ -33,13 +45,13 @@
         android:layout_height="wrap_content"
         android:text="\@username"
         android:id="@+id/tvUserName"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/tvRetweeted"
         android:layout_toRightOf="@+id/tvName"
         android:layout_toEndOf="@+id/tvName"
         android:textSize="12sp"
         android:textColor="@color/light_gray"
         android:fontFamily="sans-serif-light"
-        android:layout_alignBottom="@+id/tvName"
+        android:layout_alignTop="@+id/tvName"
         android:gravity="bottom" />
 
     <TextView
@@ -47,8 +59,6 @@
         android:layout_height="wrap_content"
         android:text="tweet body"
         android:id="@+id/tvBody"
-        android:autoLink="all"
-        android:linksClickable="true"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:layout_below="@+id/tvName"
@@ -70,5 +80,51 @@
         android:textColor="@color/light_gray"
         android:gravity="bottom"
         android:fontFamily="sans-serif-light" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBody"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/reply"
+            android:drawablePadding="5dp"
+            android:id="@+id/tvReply"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/light_gray"
+            android:textSize="10sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/retweet"
+            android:drawablePadding="5dp"
+            android:text="1"
+            android:id="@+id/tvRetweet"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/light_gray"
+            android:textSize="10sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/favorite"
+            android:drawablePadding="5dp"
+            android:text="2"
+            android:id="@+id/tvFavorite"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/light_gray"
+            android:textSize="10sp"
+            android:gravity="center_vertical" />
+    </LinearLayout>
 
 </RelativeLayout>

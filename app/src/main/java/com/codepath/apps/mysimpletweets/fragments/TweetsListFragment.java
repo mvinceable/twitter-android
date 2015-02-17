@@ -43,9 +43,9 @@ public class TweetsListFragment extends Fragment {
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-            // Triggered only when new data needs to be appended to the list
-            // Add whatever code is needed to append new items to your AdapterView
-            loadMoreTweets();
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                loadMoreTweets();
             }
         });
 
@@ -100,14 +100,18 @@ public class TweetsListFragment extends Fragment {
     }
 
     protected Tweet getLastTweet() {
-        return tweets.get(tweets.size() - 1);
+        if (tweets == null || tweets.size() < 1) {
+            return null;
+        } else {
+            return tweets.get(tweets.size() - 1);
+        }
     }
 
-    protected void add(int i, Tweet tweet) {
+    public void add(int i, Tweet tweet) {
         tweets.add(i, tweet);
     }
 
-    protected void notifyDataSetChanged() {
+    public void notifyDataSetChanged() {
         aTweets.notifyDataSetChanged();
     }
 

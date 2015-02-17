@@ -57,7 +57,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     // Get more tweets older than the last item in the tweets array
     protected void loadMoreTweets() {
         Tweet lastTweet = getLastTweet();
-        client.getHomeTimelineBeforeTweet(lastTweet, new JsonHttpResponseHandler() {
+        client.getMentionsTimelineBeforeTweet(lastTweet, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 addAll(Tweet.fromJSONArray(response));

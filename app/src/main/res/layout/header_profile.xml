@@ -15,38 +15,52 @@
         android:scaleType="centerCrop"
         android:layout_above="@+id/llCounts" />
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/ivProfileImage"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:background="@color/white"
-        android:padding="3dp"
-        android:layout_marginBottom="3dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="First Last"
-        android:id="@+id/tvName"
-        android:layout_below="@+id/ivProfileImage"
-        android:layout_centerHorizontal="true"
-        android:textSize="16sp"
-        android:textColor="@color/white" />
+        android:background="@drawable/gradient_profile_image"
+        android:id="@+id/rlProfile">
+        
+        <View
+            android:alpha="0"
+            android:id="@+id/vDimmer"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:background="#88000000" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="\@username"
-        android:id="@+id/tvUserName"
-        android:layout_below="@+id/tvName"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginBottom="12dp" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="16dp"
+            android:layout_height="18dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="12dp">
+
+            <ImageView
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_weight="1"
+                android:id="@+id/ivPageInfo"
+                android:background="@drawable/pager_white"
+                android:layout_marginRight="2dp" />
+
+            <ImageView
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_weight="1"
+                android:id="@+id/ivPageDescription"
+                android:background="@drawable/pager_white"
+                android:layout_marginLeft="2dp"
+                android:alpha=".5" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/llCounts"
@@ -55,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tvUserName"
+        android:layout_below="@+id/rlProfile"
         android:background="@color/white">
 
         <TextView

@@ -8,4 +8,6 @@
     <color name="lightest_gray">#EEEEEE</color>
     <color name="black">#000000</color>
     <color name="link">#0084B4</color>
+    <color name="retweeted">#5c913b</color>
+    <color name="favorited">#ffac33</color>
 </resources>

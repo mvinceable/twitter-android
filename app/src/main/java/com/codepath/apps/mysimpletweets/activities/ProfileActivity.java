@@ -33,6 +33,7 @@ public class ProfileActivity extends TimelineActivity {
             String profileImageUrl = i.getStringExtra("profile_image_url");
             String profileBannerUrl = i.getStringExtra("profile_banner_url");
             int statusesCount = i.getIntExtra("statuses_count", 0);
+            String description = i.getStringExtra("description");
 
             // Create the user timeline fragment
             UserTimelineFragment fragmentUserTimeline = UserTimelineFragment.newInstance(
@@ -42,7 +43,8 @@ public class ProfileActivity extends TimelineActivity {
                     friendsCount,
                     profileImageUrl,
                     profileBannerUrl,
-                    statusesCount);
+                    statusesCount,
+                    description);
             // Display user timeline fragment within this activity (dynamically)
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flContainer, fragmentUserTimeline);

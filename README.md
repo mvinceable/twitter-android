@@ -2,7 +2,7 @@
 
 This is an enhanced version of the Android Twitter Client made previously. In addition to the Home timeline view, a Mentions view has been added that shows the Mentions for the logged in user.  A sliding tab view pager is used to switch between the logged in user's Home and Mentions timelines.  A user profile view has also been added that contains a profile header along with tweet, following, and follower counts.  In the profile view header, a view pager has been implemented to view the account description as well, along with alpha effects.  Tapping on a user's profile image loads the profile view for that user.  Tapping on an account for a user who's current profile is already being viewed will cause the screen to shake since that user's profile is already being viewed.  The UI has been styled to have as close to the same look and feel as today's Twitter client.
 
-Time spent: 25 hours spent in total
+Time spent: 26 hours spent in total
 
 Completed required user stories:
 
@@ -39,9 +39,11 @@ Walkthrough of all user stories:
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-In addition to those listed for the Simple Twitter Client, the following libraries are used to make this possible:
+In addition to those listed for the Simple Twitter Client, the following libraries and resources are used to make this possible:
 
  * [Android PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip) - Interactive paging indicator widget, compatible with the ViewPager from the Android Support Library.
+ * [iconmonstr](http://iconmonstr.com/) - Free simple icons
+ * [Twitter Brand Resources](https://dev.twitter.com/overview/general/image-resources) - Resources for theming and styling the app.
 
 # Simple Twitter Client
 

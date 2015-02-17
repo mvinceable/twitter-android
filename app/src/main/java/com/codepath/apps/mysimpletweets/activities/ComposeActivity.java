@@ -26,17 +26,21 @@ public class ComposeActivity extends ActionBarActivity {
     EditText etBody;
     Button btnTweet;
     TextView tvCharsLeft;
+    long replyToId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
         etBody = (EditText) findViewById(R.id.etBody);
-        // Remove the under bar from the EditText
+        // Remove the under bar from the EditText and make hint lighter
         etBody.setBackground(null);
+        etBody.setHintTextColor(getResources().getColor(R.color.lighter_gray));
 
         // There are extras if this is a reply
         String replyToUserName = getIntent().getStringExtra("replyToUserName");
+        replyToId = getIntent().getLongExtra("replyToId", 0);
+
         if (replyToUserName != null) {
             etBody.setText("@" + replyToUserName + " ");
             // Place cursor at the end of text
@@ -68,6 +72,7 @@ public class ComposeActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("body", etBody.getText().toString());
+                returnIntent.putExtra("replyToId", replyToId);
                 setResult(RESULT_OK, returnIntent);
                 finish();
             }
@@ -96,6 +101,7 @@ public class ComposeActivity extends ActionBarActivity {
 
         // Add back button
         actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
     // Updates character count and sets state of tweet button
@@ -105,7 +111,7 @@ public class ComposeActivity extends ActionBarActivity {
         // Update button state depending on text
         if (count < 0 || count == 140) {
             btnTweet.setEnabled(false);
-            btnTweet.setTextColor(Color.parseColor("#CCCCCC"));
+            btnTweet.setTextColor(getResources().getColor(R.color.tab_underline));
         } else {
             btnTweet.setEnabled(true);
             btnTweet.setTextColor(Color.parseColor("white"));
@@ -128,10 +134,11 @@ public class ComposeActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

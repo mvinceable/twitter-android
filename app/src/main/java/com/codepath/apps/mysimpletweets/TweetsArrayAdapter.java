@@ -65,7 +65,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         tvBody.setText(tweetToDisplay.getBody());
         ivProfileImage.setImageResource(android.R.color.transparent); // clear out the old image for a recycled view
         Picasso.with(getContext()).load(tweetToDisplay.getUser().getProfileImageUrl()).into(ivProfileImage);
-        tvRetweet.setText(String.valueOf(tweetToDisplay.getRetweetCount()));
+        tvRetweet.setText(String.valueOf(tweet.getRetweetCount()));
         tvFavorite.setText(String.valueOf(tweetToDisplay.getFavoriteCount()));
 
         // Current user has retweeted
@@ -80,7 +80,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
 
         // Current user favorited
-        if (tweet.isFavorited()) {
+        if (tweetToDisplay.isFavorited()) {
             tvFavorite.setTextColor(getContext().getResources().getColor(R.color.favorited));
             tvFavorite.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.favorite_on, //left
@@ -110,7 +110,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             @Override
             public void onClick(View v) {
                 if (callback != null) {
-                    callback.showDetails(tweetToDisplay);
+                    callback.showDetails(tweet, tweetToDisplay);
                 }
             }
         });
@@ -155,12 +155,12 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         return convertView;
     }
 
-    private void updateRetweetCount(TextView tvRetweet, Tweet tweetToDisplay) {
-        tvRetweet.setText(String.valueOf(tweetToDisplay.getRetweetCount()));
+    private void updateRetweetCount(TextView tvRetweet, Tweet tweet) {
+        tvRetweet.setText(String.valueOf(tweet.getRetweetCount()));
     }
 
-    private void updateFavoriteCount(TextView tvFavorite, Tweet tweetToDisplay) {
-        tvFavorite.setText(String.valueOf(tweetToDisplay.getFavoriteCount()));
+    private void updateFavoriteCount(TextView tvFavorite, Tweet tweet) {
+        tvFavorite.setText(String.valueOf(tweet.getFavoriteCount()));
     }
 
     private void setRetweetState(boolean on, TextView tvRetweet) {
@@ -208,9 +208,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     }
 
     public interface TweetDetailsCallback {
-        public void showDetails(Tweet tweet);
+        public void showDetails(Tweet tweet, Tweet tweetToDisplay);
         public void showProfile(User user);
-        public void onReply(Tweet tweet);
+        public void onReply(Tweet tweetToDisplay);
         public void onRetweet(Tweet tweet);
         public void onFavorite(Tweet tweet);
     }

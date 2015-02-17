@@ -47,7 +47,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
     boolean retweeted;
     boolean favorited;
 
-    public final static int COMPOSE_REQUEST_CODE = 50;
+    public final static int REPLY_REQUEST_CODE = 70;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +167,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
                     Intent i = new Intent(TweetDetailsActivity.this, ComposeActivity.class);
                     i.putExtra("replyToId", getIntent().getLongExtra("uid", 0));
                     i.putExtra("replyToUserName", getIntent().getStringExtra("userName"));
-                    startActivityForResult(i, COMPOSE_REQUEST_CODE);
+                    startActivityForResult(i, REPLY_REQUEST_CODE);
                 }
 
                 @Override
@@ -179,13 +179,13 @@ public class TweetDetailsActivity extends ActionBarActivity {
             Intent i = new Intent(TweetDetailsActivity.this, ComposeActivity.class);
             i.putExtra("replyToId", uid);
             i.putExtra("replyToUserName", userName);
-            startActivityForResult(i, COMPOSE_REQUEST_CODE);
+            startActivityForResult(i, REPLY_REQUEST_CODE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == COMPOSE_REQUEST_CODE) {
+        if (requestCode == REPLY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 String body = data.getStringExtra("body");
                 final Tweet tweet = new Tweet(User.getCurrentUser(), body);
@@ -196,7 +196,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
                         tweet.setWithJSON(response);
                         // Save the tweet
                         tweet.save();
-                        Toast.makeText(TweetDetailsActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TweetDetailsActivity.this, "success replying from details", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

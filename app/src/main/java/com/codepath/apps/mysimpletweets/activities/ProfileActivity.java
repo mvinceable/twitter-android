@@ -8,13 +8,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.fragments.UserTimelineFragment;
+import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 public class ProfileActivity extends TimelineActivity {
     private String screenName;
+    UserTimelineFragment fragmentUserTimeline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +44,7 @@ public class ProfileActivity extends TimelineActivity {
             String description = i.getStringExtra("description");
 
             // Create the user timeline fragment
-            UserTimelineFragment fragmentUserTimeline = UserTimelineFragment.newInstance(
+            fragmentUserTimeline = UserTimelineFragment.newInstance(
                     this.screenName,
                     name,
                     followersCount,
@@ -91,6 +99,38 @@ public class ProfileActivity extends TimelineActivity {
             getWindow().getDecorView().findViewById(android.R.id.content).startAnimation(shake);
         } else {
             super.showProfile(user);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REPLY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // 1. Optimistically create a tweet object and add it to the listview
+                String body = data.getStringExtra("body");
+                final Tweet tweet = new Tweet(User.getCurrentUser(), body);
+                // Optimistic update only for home timeline
+                fragmentUserTimeline.add(0, tweet);
+                fragmentUserTimeline.notifyDataSetChanged();
+                // 2. Post the tweet to twitter
+                TwitterApplication.getRestClient().postReply(body, data.getLongExtra("replyToId", 0), new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        tweet.setWithJSON(response);
+                        // Save the tweet
+                        tweet.save();
+                        Toast.makeText(ProfileActivity.this, "success replying from profile", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        Toast.makeText(ProfileActivity.this, "Failed posting reply", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        } else if (requestCode == DETAILS_REQUEST_CODE) {
+            // Update the adapter in case states changed
+            fragmentUserTimeline.notifyDataSetChanged();
         }
     }
 }

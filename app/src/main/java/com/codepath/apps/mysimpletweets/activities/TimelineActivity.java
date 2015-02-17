@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
     protected TwitterClient client;
     public final static int COMPOSE_REQUEST_CODE = 50;
     public final static int DETAILS_REQUEST_CODE = 60;
+    public final static int REPLY_REQUEST_CODE = 70;
     ViewPager vpPager;
     TweetsPagerAdapter pagerAdapterTweets;
     HomeTimelineFragment fragmentHome;
@@ -58,7 +60,8 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL), Typeface.NORMAL);
         tabStrip.setTextColor(getResources().getColor(R.color.twitter_primary));
-        tabStrip.setTextSize(24);
+        int pxTabTextSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 18, getResources().getDisplayMetrics());
+        tabStrip.setTextSize(pxTabTextSize);
         // Attach the tabsstrip to the viewpager
         tabStrip.setViewPager(vpPager);
     }
@@ -113,7 +116,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
 
 //    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == COMPOSE_REQUEST_CODE) {
+        if (requestCode == COMPOSE_REQUEST_CODE || requestCode == REPLY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // 1. Optimistically create a tweet object and add it to the listview
                 String body = data.getStringExtra("body");
@@ -125,22 +128,40 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
                     fragment.add(0, tweet);
                     fragment.notifyDataSetChanged();
                 }
-                // 2. Post the tweet to twitter
-                client.postStatus(body, new JsonHttpResponseHandler() {
-                    // 3. On success, update the tweet object with the proper attributes
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        tweet.setWithJSON(response);
-                        // Save the tweet
-                        tweet.save();
-                        Toast.makeText(TimelineActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
-                    }
+                if (requestCode == COMPOSE_REQUEST_CODE) {
+                    // 2. Post the tweet to twitter
+                    client.postStatus(body, new JsonHttpResponseHandler() {
+                        // 3. On success, update the tweet object with the proper attributes
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            tweet.setWithJSON(response);
+                            // Save the tweet
+                            tweet.save();
+                            Toast.makeText(TimelineActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
+                        }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        Toast.makeText(TimelineActivity.this, "Failed posting tweet", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Toast.makeText(TimelineActivity.this, "Failed posting tweet", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else if (requestCode == REPLY_REQUEST_CODE) {
+                    // 2. Post the tweet to twitter
+                    TwitterApplication.getRestClient().postReply(body, data.getLongExtra("replyToId", 0), new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            tweet.setWithJSON(response);
+                            // Save the tweet
+                            tweet.save();
+                            Toast.makeText(TimelineActivity.this, "success replying from timeline", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Toast.makeText(TimelineActivity.this, "Failed posting reply", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         } else if (requestCode == DETAILS_REQUEST_CODE) {
             // Update the adapter in case states changed
@@ -151,24 +172,24 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
     }
 
     @Override
-    public void showDetails(Tweet tweet) {
+    public void showDetails(Tweet tweet, Tweet tweetToDisplay) {
         Intent i = new Intent(this, TweetDetailsActivity.class);
-        User u = tweet.getUser();
+        User u = tweetToDisplay.getUser();
         i.putExtra("name", u.getName());
         i.putExtra("userName", u.getScreenName());
         i.putExtra("profileImageUrl", u.getProfileImageUrl());
-        i.putExtra("body", tweet.getBody());
-        i.putExtra("time", tweet.getTimeForDetails());
-        i.putExtra("uid", tweet.getUid());
+        i.putExtra("body", tweetToDisplay.getBody());
+        i.putExtra("time", tweetToDisplay.getTimeForDetails());
+        i.putExtra("uid", tweetToDisplay.getUid());
         i.putExtra("description", u.getDescription());
         i.putExtra("followersCount", u.getFollowersCount());
         i.putExtra("friendsCount", u.getFriendsCount());
         i.putExtra("profileBannerUrl", u.getProfileBannerUrl());
         i.putExtra("statusesCount", u.getStatusesCount());
         i.putExtra("retweetCount", tweet.getRetweetCount());
-        i.putExtra("favoritesCount", tweet.getFavoriteCount());
+        i.putExtra("favoritesCount", tweetToDisplay.getFavoriteCount());
         i.putExtra("retweeted", tweet.isRetweeted());
-        i.putExtra("favorited", tweet.isFavorited());
+        i.putExtra("favorited", tweetToDisplay.isFavorited());
         Tweet.setTweetShowingDetails(tweet);
         startActivityForResult(i, DETAILS_REQUEST_CODE);
     }
@@ -199,7 +220,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
                     Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
                     i.putExtra("replyToId", tweet.getUid());
                     i.putExtra("replyToUserName", tweet.getUser().getScreenName());
-                    startActivityForResult(i, COMPOSE_REQUEST_CODE);
+                    startActivityForResult(i, REPLY_REQUEST_CODE);
                 }
 
                 @Override
@@ -211,7 +232,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
             Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
             i.putExtra("replyToId", tweet.getUid());
             i.putExtra("replyToUserName", tweet.getUser().getScreenName());
-            startActivityForResult(i, COMPOSE_REQUEST_CODE);
+            startActivityForResult(i, REPLY_REQUEST_CODE);
         }
     }
 

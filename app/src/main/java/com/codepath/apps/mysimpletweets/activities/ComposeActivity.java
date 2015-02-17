@@ -26,6 +26,7 @@ public class ComposeActivity extends ActionBarActivity {
     EditText etBody;
     Button btnTweet;
     TextView tvCharsLeft;
+    long replyToId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class ComposeActivity extends ActionBarActivity {
 
         // There are extras if this is a reply
         String replyToUserName = getIntent().getStringExtra("replyToUserName");
+        replyToId = getIntent().getLongExtra("replyToId", 0);
+
         if (replyToUserName != null) {
             etBody.setText("@" + replyToUserName + " ");
             // Place cursor at the end of text
@@ -69,6 +72,7 @@ public class ComposeActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("body", etBody.getText().toString());
+                returnIntent.putExtra("replyToId", replyToId);
                 setResult(RESULT_OK, returnIntent);
                 finish();
             }

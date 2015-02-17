@@ -126,8 +126,15 @@ public class Tweet extends Model {
     }
 
     public static void favoriteTweetShowingDetails() {
+        Tweet tweetToFavorite;
         if (Tweet.tweetShowingDetails != null) {
-            Tweet.tweetShowingDetails.favorite();
+            // Favorite the original tweet if it's a retweet
+            if (Tweet.tweetShowingDetails.getRetweetedStatus() != null) {
+                tweetToFavorite = Tweet.tweetShowingDetails.getRetweetedStatus();
+            } else {
+                tweetToFavorite = Tweet.tweetShowingDetails;
+            }
+            tweetToFavorite.favorite();
         }
     }
 

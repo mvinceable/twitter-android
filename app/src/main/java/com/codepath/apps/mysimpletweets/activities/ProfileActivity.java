@@ -109,9 +109,9 @@ public class ProfileActivity extends TimelineActivity {
                 // 1. Optimistically create a tweet object and add it to the listview
                 String body = data.getStringExtra("body");
                 final Tweet tweet = new Tweet(User.getCurrentUser(), body);
-                // Optimistic update only for home timeline
-                fragmentUserTimeline.add(0, tweet);
-                fragmentUserTimeline.notifyDataSetChanged();
+//                // Optimistic update only for home timeline
+//                fragmentUserTimeline.add(0, tweet);
+//                fragmentUserTimeline.notifyDataSetChanged();
                 // 2. Post the tweet to twitter
                 TwitterApplication.getRestClient().postReply(body, data.getLongExtra("replyToId", 0), new JsonHttpResponseHandler() {
                     @Override
@@ -119,7 +119,7 @@ public class ProfileActivity extends TimelineActivity {
                         tweet.setWithJSON(response);
                         // Save the tweet
                         tweet.save();
-                        Toast.makeText(ProfileActivity.this, "success replying from profile", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ProfileActivity.this, "success replying from profile", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

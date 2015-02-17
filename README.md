@@ -1,3 +1,48 @@
+# Twitter Android Application Redux
+
+This is an enhanced version of the Android Twitter Client made previously. In addition to the Home timeline view, a Mentions view has been added that shows the Mentions for the logged in user.  A sliding tab view pager is used to switch between the logged in user's Home and Mentions timelines.  A user profile view has also been added that contains a profile header along with tweet, following, and follower counts.  In the profile view header, a view pager has been implemented to view the account description as well, along with alpha effects.  Tapping on a user's profile image loads the profile view for that user.  Tapping on an account for a user who's current profile is already being viewed will cause the screen to shake since that user's profile is already being viewed.  The UI has been styled to have as close to the same look and feel as today's Twitter client.
+
+Time spent: 25 hours spent in total
+
+Completed required user stories:
+
+* [x] all required user stories from the Simple Twitter Client
+* [x] User can switch between Timeline and Mention views using tabs.
+* [x] User can view their home timeline tweets.
+* [x] User can view the recent mentions of their username.
+* [x] User can navigate to view their own profile
+* [x] User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+* [x] User can click on the profile image in any tweet to see another user's profile.
+* [x] User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
+* [x] Profile view should include that user's timeline
+* [x] User can infinitely paginate any of these timelines (home, mentions, user) by scrolling to the bottom
+
+Completed optional user stories:
+
+* [x] Advanced: User can "reply" to any tweet on their home timeline
+* [x] The user that wrote the original tweet is automatically "@" replied in compose
+* [x] Advanced: User can click on a tweet to be taken to a "detail view" of that tweet
+* [x] Advanced: User can take favorite (and unfavorite) or reweet actions on a tweet
+* [x] Advanced: Improve the user interface and theme the app to feel twitter branded
+
+Optional Stories not completed:
+
+* [ ] User can view following / followers list through the profile
+* [ ] Advanced: Robust error handling, check if internet is available, handle error cases, network failures
+* [ ] Advanced: When a network request is sent, user sees an indeterminate progress indicator
+* [ ] Advanced: User can search for tweets matching a particular query and see results
+* [ ] Bonus: User can view their direct messages (or send new ones)
+
+Walkthrough of all user stories:
+
+![Video Walkthrough](demo.gif)
+
+GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+In addition to those listed for the Simple Twitter Client, the following libraries are used to make this possible:
+
+ * [Android PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip) - Interactive paging indicator widget, compatible with the ViewPager from the Android Support Library.
+
 # Simple Twitter Client
 
 This is a simple Twitter client that supports viewing a user's timeline, composing a tweet, and replying to tweets.
@@ -29,7 +74,7 @@ Completed optional user stories:
 
 Walkthrough of all user stories:
 
-![Video Walkthrough](demo.gif)
+![Video Walkthrough](demo-v1.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

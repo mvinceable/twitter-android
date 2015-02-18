@@ -48,6 +48,8 @@ public class Tweet extends Model {
     private Tweet retweetedStatus;
     @Column(name = "current_user_retweet_id")
     private long retweetId;
+    @Column(name = "media_url")
+    private String mediaUrl;
 
     // This stores the tweet we are currently showing details for
     private static Tweet tweetShowingDetails;
@@ -115,6 +117,10 @@ public class Tweet extends Model {
         return retweetId;
     }
 
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
     public static void setTweetShowingDetails(Tweet tweetShowingDetails) {
         Tweet.tweetShowingDetails = tweetShowingDetails;
     }
@@ -142,6 +148,7 @@ public class Tweet extends Model {
     // Tweet.fromJSON("{ ... }") => <Tweet>
     public static Tweet fromJSON(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
+        JSONArray arrayMedia;
         // Extract the values from the json, store them
         try {
             tweet.body = jsonObject.getString("text");
@@ -162,6 +169,19 @@ public class Tweet extends Model {
             }
             if (jsonObject.has("current_user_retweet")) {
                 tweet.retweetId = jsonObject.getJSONObject("current_user_retweet").getLong("id");
+            }
+            if (jsonObject.has("entities")) {
+                if (jsonObject.getJSONObject("entities").has("media")) {
+                    arrayMedia = jsonObject.getJSONObject("entities").getJSONArray("media");
+                    // Iterate through the array for photos
+                    for (int i = 0; i < arrayMedia.length(); i++) {
+                        if (arrayMedia.getJSONObject(i).getString("type").equals("photo")) {
+//                            Log.d("DEBUG", arrayMedia.getJSONObject(i).getString("media_url"));
+                            tweet.mediaUrl = arrayMedia.getJSONObject(i).getString("media_url");
+                            break;
+                        }
+                    }
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -230,6 +250,7 @@ public class Tweet extends Model {
 
     // Updates tweet with the values from a json
     public void setWithJSON(JSONObject json) {
+        JSONArray arrayMedia;
         try {
             this.body = json.getString("text");
             this.uid = json.getLong("id");
@@ -249,6 +270,19 @@ public class Tweet extends Model {
             }
             if (json.has("current_user_retweet")) {
                 this.retweetId = json.getJSONObject("current_user_retweet").getLong("id");
+            }
+            if (json.has("entities")) {
+                if (json.getJSONObject("entities").has("media")) {
+                    arrayMedia = json.getJSONObject("entities").getJSONArray("media");
+                    // Iterate through the array for photos
+                    for (int i = 0; i < arrayMedia.length(); i++) {
+                        if (arrayMedia.getJSONObject(i).getString("type").equals("photo")) {
+//                            Log.d("DEBUG", arrayMedia.getJSONObject(i).getString("media_url"));
+                            this.mediaUrl = arrayMedia.getJSONObject(i).getString("media_url");
+                            break;
+                        }
+                    }
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -81,11 +81,21 @@
         android:gravity="bottom"
         android:fontFamily="sans-serif-light" />
 
+    <com.codepath.apps.mysimpletweets.DynamicImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBody"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginTop="5dp"
+        android:id="@+id/ivEntity"
+        android:scaleType="fitCenter" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvBody"
+        android:layout_below="@+id/ivEntity"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:layout_marginTop="5dp">

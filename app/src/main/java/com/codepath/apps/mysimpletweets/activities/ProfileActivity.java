@@ -2,7 +2,6 @@ package com.codepath.apps.mysimpletweets.activities;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +25,7 @@ public class ProfileActivity extends TimelineActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSubClassOnCreated = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
@@ -59,11 +59,7 @@ public class ProfileActivity extends TimelineActivity {
             ft.commit(); // changes the fragments
 
             // Setup ActionBar
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-            actionBar.setLogo(R.drawable.ic_logo_twitter);
-            actionBar.setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

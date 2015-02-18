@@ -185,6 +185,34 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().post(apiUrl, null, handler);
     }
 
+    // Search for tweets
+    // https://api.twitter.com/1.1/search/tweets.json
+    public void getTweetsForQuery(String query, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("search/tweets.json");
+        // Specify the params
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("q", query);
+        // This parameter enables current_user_retweet to be returned for destroying retweets
+        params.put("include_my_retweet", 1);
+        // Execute the request
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getTweetsForQueryBeforeTweet(String query, Tweet tweet, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("search/tweets.json");
+        // Specify the params
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("q", query);
+        // This parameter enables current_user_retweet to be returned for destroying retweets
+        params.put("include_my_retweet", 1);
+        // Subtract 1 from uid so it's not included in the response
+        params.put("max_id", tweet.getUid() - 1);
+        // Execute the request
+        getClient().get(apiUrl, params, handler);
+    }
+
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
 	 * 2. Define the parameters to pass to the request (query or body)

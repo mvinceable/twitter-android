@@ -56,6 +56,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         final TextView tvRetweet = (TextView) convertView.findViewById(R.id.tvRetweet);
         final TextView tvFavorite = (TextView) convertView.findViewById(R.id.tvFavorite);
         TextView tvRetweeted = (TextView) convertView.findViewById(R.id.tvRetweeted);
+        ImageView ivEntity = (ImageView) convertView.findViewById(R.id.ivEntity);
 
         User u = tweetToDisplay.getUser();
         // 4. Populate data into the subviews
@@ -67,6 +68,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         Picasso.with(getContext()).load(tweetToDisplay.getUser().getProfileImageUrl()).into(ivProfileImage);
         tvRetweet.setText(String.valueOf(tweet.getRetweetCount()));
         tvFavorite.setText(String.valueOf(tweetToDisplay.getFavoriteCount()));
+
+        if (tweetToDisplay.getMediaUrl() != null) {
+            ivEntity.setImageResource(android.R.color.transparent); // clear out the old image for a recycled view
+            Picasso.with(getContext()).load(tweetToDisplay.getMediaUrl()).into(ivEntity);
+            ivEntity.setVisibility(View.VISIBLE);
+        } else {
+            ivEntity.setVisibility(View.GONE);
+        }
 
         // Current user has retweeted
         setRetweetState(tweet.isRetweeted(), tvRetweet);

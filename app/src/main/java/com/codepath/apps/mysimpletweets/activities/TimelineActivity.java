@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -46,7 +48,8 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
     MentionsTimelineFragment fragmentMentions;
     protected SearchView mSearchView;
 
-    // subclass sets the to true so that onCreate initialization isn't performed unnecesssarily
+    // subclass sets this to true so that onCreate initialization isn't performed unnecessarily
+    // This can be avoided by not making this a base class
     protected boolean mSubClassOnCreated = false;
 
     @Override
@@ -112,6 +115,8 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
 //        searchHintIcon.setImageResource(R.drawable.ic_action_search);
         ImageView searchCloseIcon = (ImageView) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         searchCloseIcon.setImageResource(R.drawable.ic_action_close);
+        TextView tvSearchHint = (TextView) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        tvSearchHint.setHintTextColor(Color.WHITE);
     }
 
     @Override
@@ -318,10 +323,11 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
 
     @Override
     public boolean onQueryTextSubmit(String s) {
+        mSearchView.clearFocus();
         Intent i = new Intent(this, SearchActivity.class);
         i.putExtra("query", s);
         startActivityForResult(i, SEARCH_RESULT_CODE);
-        return false;
+        return true;
     }
 
     @Override

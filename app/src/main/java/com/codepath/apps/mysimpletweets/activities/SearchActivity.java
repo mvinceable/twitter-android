@@ -57,6 +57,9 @@ public class SearchActivity extends TimelineActivity implements MenuItemCompat.O
         // Set initial text
         setSearchText(getIntent().getStringExtra("query"));
 
+        // Remove automatic focus from search view
+        mSearchView.clearFocus();
+
         return true;
     }
 
@@ -88,8 +91,12 @@ public class SearchActivity extends TimelineActivity implements MenuItemCompat.O
     public boolean onQueryTextSubmit(String s) {
         setSearchText(s);
         // Update the search results
-        fragmentSearchResults.updateWithQuery(s);
-        return false;
+        // TODO: investigate why this may be null
+        if (fragmentSearchResults != null) {
+            fragmentSearchResults.updateWithQuery(s);
+        }
+        mSearchView.clearFocus();
+        return true;
     }
 
     @Override

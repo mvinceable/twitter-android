@@ -112,7 +112,12 @@ public class TweetsListFragment extends Fragment {
     }
 
     public void notifyDataSetChanged() {
-        aTweets.notifyDataSetChanged();
+        if (aTweets != null) {
+            aTweets.notifyDataSetChanged();
+        } else {
+            // TODO: figure out why this happens
+            Log.d("DEBUG", "aTweets is null");
+        }
     }
 
     protected void populateTimeline() {

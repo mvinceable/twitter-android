@@ -1,7 +1,6 @@
 package com.codepath.apps.mysimpletweets.activities;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,6 +32,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
     TextView tvFavorites;
     ImageButton ibRetweet;
     ImageButton ibFavorite;
+    ImageView ivEntity;
     long uid;
     String userName;
     String description;
@@ -46,6 +46,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
     int favoritesCount;
     boolean retweeted;
     boolean favorited;
+    String mediaUrl;
 
     public final static int REPLY_REQUEST_CODE = 70;
 
@@ -69,6 +70,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
         favoritesCount = i.getIntExtra("favoritesCount", 0);
         retweeted = i.getBooleanExtra("retweeted", false);
         favorited = i.getBooleanExtra("favorited", false);
+        mediaUrl = i.getStringExtra("mediaUrl");
 
         setupViews();
     }
@@ -83,6 +85,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
         tvFavorites = (TextView) findViewById(R.id.tvFavorites);
         ibRetweet = (ImageButton) findViewById(R.id.ibRetweet);
         ibFavorite = (ImageButton) findViewById(R.id.ibFavorite);
+        ivEntity = (ImageView) findViewById(R.id.ivEntity);
 
         Intent i = getIntent();
         tvName.setText(name);
@@ -91,6 +94,14 @@ public class TweetDetailsActivity extends ActionBarActivity {
         Picasso.with(this).load(profileImageUrl).into(ivProfileImage);
         tvBody.setText(i.getStringExtra("body"));
         tvTime.setText(i.getStringExtra("time"));
+
+        if (mediaUrl != null) {
+            ivEntity.setImageResource(android.R.color.transparent); // clear out the old image for a recycled view
+            Picasso.with(this).load(mediaUrl).into(ivEntity);
+            ivEntity.setVisibility(View.VISIBLE);
+        } else {
+            ivEntity.setVisibility(View.GONE);
+        }
 
         updateButtonStates();
 
@@ -105,11 +116,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
         }
 
         // Setup ActionBar
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setLogo(R.drawable.ic_logo_twitter);
-        actionBar.setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     // Updates button colors and counts

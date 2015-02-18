@@ -82,7 +82,7 @@ public class User extends Model {
         try {
             // Extract and fill the values
             // Get bigger profile imagess
-            u.profileImageUrl = json.getString("profile_image_url");
+            u.profileImageUrl = json.getString("profile_image_url").replace("normal", "bigger");
             u.name = json.getString("name");
             u.uid = json.getLong("id");
             u.screenName = json.getString("screen_name");

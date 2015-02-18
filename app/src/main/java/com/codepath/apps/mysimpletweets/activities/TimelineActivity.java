@@ -5,13 +5,17 @@ import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -29,41 +33,50 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
-public class TimelineActivity extends ActionBarActivity implements TweetsArrayAdapter.TweetDetailsCallback {
+public class TimelineActivity extends ActionBarActivity implements TweetsArrayAdapter.TweetDetailsCallback, SearchView.OnQueryTextListener {
 
     protected TwitterClient client;
     public final static int COMPOSE_REQUEST_CODE = 50;
     public final static int DETAILS_REQUEST_CODE = 60;
     public final static int REPLY_REQUEST_CODE = 70;
+    public final static int SEARCH_RESULT_CODE = 80;
     ViewPager vpPager;
     TweetsPagerAdapter pagerAdapterTweets;
     HomeTimelineFragment fragmentHome;
     MentionsTimelineFragment fragmentMentions;
+    protected SearchView mSearchView;
+
+    // subclass sets the to true so that onCreate initialization isn't performed unnecesssarily
+    protected boolean mSubClassOnCreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timeline);
 
         // Get the client
         client = TwitterApplication.getRestClient(); // singleton client
 
-        // Setup the custom action bar
-        setupActionBar();
+        // if a child class already initialized, then this class doesn't have to
+        if (!mSubClassOnCreated) {
+            setContentView(R.layout.activity_timeline);
 
-        // Get the viewpager
-        vpPager = (ViewPager) findViewById(R.id.viewpager);
-        // Set the viewpager adapter for the pager
-        pagerAdapterTweets = new TweetsPagerAdapter(getSupportFragmentManager());
-        vpPager.setAdapter(pagerAdapterTweets);
-        // Find the sliding tabstrip
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabStrip.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL), Typeface.NORMAL);
-        tabStrip.setTextColor(getResources().getColor(R.color.twitter_primary));
-        int pxTabTextSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 18, getResources().getDisplayMetrics());
-        tabStrip.setTextSize(pxTabTextSize);
-        // Attach the tabsstrip to the viewpager
-        tabStrip.setViewPager(vpPager);
+            // Setup the custom action bar
+            setupActionBar();
+
+            // Get the viewpager
+            vpPager = (ViewPager) findViewById(R.id.viewpager);
+            // Set the viewpager adapter for the pager
+            pagerAdapterTweets = new TweetsPagerAdapter(getSupportFragmentManager());
+            vpPager.setAdapter(pagerAdapterTweets);
+            // Find the sliding tabstrip
+            PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+            tabStrip.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL), Typeface.NORMAL);
+            tabStrip.setTextColor(getResources().getColor(R.color.twitter_primary));
+            int pxTabTextSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 18, getResources().getDisplayMetrics());
+            tabStrip.setTextSize(pxTabTextSize);
+            // Attach the tabsstrip to the viewpager
+            tabStrip.setViewPager(vpPager);
+        }
     }
 
     private void setupActionBar() {
@@ -77,7 +90,28 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_timeline, menu);
+
+        mSearchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search));
+        mSearchView.setQueryHint(getResources().getString(R.string.search_hint));
+        mSearchView.setOnQueryTextListener(this);
+
+        styleSearchView();
+
         return true;
+    }
+
+    // Customize the SearchView
+    protected void styleSearchView() {
+        View searchPlate = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+        searchPlate.setBackgroundColor(getResources().getColor(R.color.twitter_primary));
+
+        ImageView searchMagIcon = (ImageView) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+        searchMagIcon.setImageResource(R.drawable.ic_action_search);
+        // doesn't work
+//        ImageView searchHintIcon = (ImageView) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_mag_icon);
+//        searchHintIcon.setImageResource(R.drawable.ic_action_search);
+        ImageView searchCloseIcon = (ImageView) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        searchCloseIcon.setImageResource(R.drawable.ic_action_close);
     }
 
     @Override
@@ -164,10 +198,15 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
                 }
             }
         } else if (requestCode == DETAILS_REQUEST_CODE) {
-            // Update the adapter in case states changed
-            int fragmentPosition = vpPager.getCurrentItem();
-            TweetsListFragment fragment = (TweetsListFragment) pagerAdapterTweets.getItem(fragmentPosition);
-            fragment.notifyDataSetChanged();
+            if (vpPager != null) {
+                // Update the adapter in case states changed
+                int fragmentPosition = vpPager.getCurrentItem();
+                TweetsListFragment fragment = (TweetsListFragment) pagerAdapterTweets.getItem(fragmentPosition);
+                fragment.notifyDataSetChanged();
+            }
+        } else if (requestCode == SEARCH_RESULT_CODE) {
+            // Refresh options menu so that search bar is collapsed
+            invalidateOptionsMenu();
         }
     }
 
@@ -190,6 +229,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
         i.putExtra("favoritesCount", tweetToDisplay.getFavoriteCount());
         i.putExtra("retweeted", tweet.isRetweeted());
         i.putExtra("favorited", tweetToDisplay.isFavorited());
+        i.putExtra("mediaUrl", tweetToDisplay.getMediaUrl());
         Tweet.setTweetShowingDetails(tweet);
         startActivityForResult(i, DETAILS_REQUEST_CODE);
     }
@@ -274,6 +314,19 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
         User.setCurrentUser(null);
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        Intent i = new Intent(this, SearchActivity.class);
+        i.putExtra("query", s);
+        startActivityForResult(i, SEARCH_RESULT_CODE);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
     }
 
     // Return the order of the fragments in the view pager

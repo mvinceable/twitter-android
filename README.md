@@ -1,8 +1,8 @@
 # Twitter Android Application Redux
 
-This is an enhanced version of the Android Twitter Client made previously. In addition to the Home timeline view, a Mentions view has been added that shows the Mentions for the logged in user.  A sliding tab view pager is used to switch between the logged in user's Home and Mentions timelines.  A user profile view has also been added that contains a profile header along with tweet, following, and follower counts.  In the profile view header, a view pager has been implemented to view the account description as well, along with alpha effects.  Tapping on a user's profile image loads the profile view for that user.  Tapping on an account for a user who's current profile is already being viewed will cause the screen to shake since that user's profile is already being viewed.  The UI has been styled to have as close to the same look and feel as today's Twitter client.
+This is an enhanced version of the Android Twitter Client made previously. In addition to the Home timeline view, a Mentions view has been added that shows the Mentions for the logged in user.  A sliding tab view pager is used to switch between the logged in user's Home and Mentions timelines.  A user profile view has been added that contains 1) the profile header and 2) the profile timeline.  The header contains tweet, following, and follower counts.  The profile header also includes a view pager to switch between the user's photo and account description.  Similar to today's Twitter client, a gradient is applied over the profile banner and an alpha transition takes place when paging.  Tapping on a user's profile image from any tweet loads the profile view for that user.  If the profile is already in view, then the screen shakes to remind the user.  Finally, searching of tweets is supported directly from the ActionBar.  The UI has been styled to have a similar look and feel to today's Twitter client.
 
-Time spent: 26 hours spent in total
+Time spent: 32 hours spent in total
 
 Completed required user stories:
 
@@ -24,18 +24,18 @@ Completed optional user stories:
 * [x] Advanced: User can click on a tweet to be taken to a "detail view" of that tweet
 * [x] Advanced: User can take favorite (and unfavorite) or reweet actions on a tweet
 * [x] Advanced: Improve the user interface and theme the app to feel twitter branded
+* [x] Advanced: User can search for tweets matching a particular query and see results
 
 Optional Stories not completed:
 
 * [ ] User can view following / followers list through the profile
 * [ ] Advanced: Robust error handling, check if internet is available, handle error cases, network failures
 * [ ] Advanced: When a network request is sent, user sees an indeterminate progress indicator
-* [ ] Advanced: User can search for tweets matching a particular query and see results
 * [ ] Bonus: User can view their direct messages (or send new ones)
 
 Walkthrough of all user stories:
 
-![Video Walkthrough](demo.gif)
+![Video Walkthrough](demo-3.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -44,6 +44,7 @@ In addition to those listed for the Simple Twitter Client, the following librari
  * [Android PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip) - Interactive paging indicator widget, compatible with the ViewPager from the Android Support Library.
  * [iconmonstr](http://iconmonstr.com/) - Free simple icons
  * [Twitter Brand Resources](https://dev.twitter.com/overview/general/image-resources) - Resources for theming and styling the app.
+ * [DynamicImageView](http://stackoverflow.com/questions/13992535/android-imageview-scale-smaller-image-to-width-with-flexible-height-without-crop) - Solution for resizing an image dynamically without cropping.
 
 # Simple Twitter Client
 
@@ -76,7 +77,7 @@ Completed optional user stories:
 
 Walkthrough of all user stories:
 
-![Video Walkthrough](demo-v1.gif)
+![Video Walkthrough](demo-1.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

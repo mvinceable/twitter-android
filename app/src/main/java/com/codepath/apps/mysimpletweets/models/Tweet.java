@@ -192,7 +192,6 @@ public class Tweet extends Model {
         return tweet;
     }
 
-
     // Tweet.fromJSONArray([ { ... }, { ... } ] => List<Tweet>
     public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<>();

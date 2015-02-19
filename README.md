@@ -1,8 +1,8 @@
 # Twitter Android Application Redux
 
-This is an enhanced version of the Android Twitter Client made previously. In addition to the Home timeline view, a Mentions view has been added that shows the Mentions for the logged in user.  A sliding tab view pager is used to switch between the logged in user's Home and Mentions timelines.  A user profile view has been added that contains 1) the profile header and 2) the profile timeline.  The header contains tweet, following, and follower counts.  The profile header also includes a view pager to switch between the user's photo and account description.  Similar to today's Twitter client, a gradient is applied over the profile banner and an alpha transition takes place when paging.  Tapping on a user's profile image from any tweet loads the profile view for that user.  If the profile is already in view, then the screen shakes to remind the user.  Finally, searching for tweets is supported directly from the ActionBar.  The UI has been styled to have a similar look and feel to today's Twitter client.
+This is an enhanced version of the Android Twitter Client made previously. In addition to the Home timeline view, a Mentions view has been added that shows the Mentions for the logged in user.  A sliding tab view pager is used to switch between the logged in user's Home and Mentions timelines.  A user profile view has been added that contains 1) the profile header and 2) the profile timeline.  The header contains tweet, following, and follower counts.  Tapping on the follower or following counts will show the list of followers or following lists for the user, respectively.  The profile header also includes a view pager to switch between the user's photo and account description.  Similar to today's Twitter client, a gradient is applied over the profile banner and an alpha transition takes place when paging.  Tapping on a user's profile image from any tweet loads the profile view for that user.  If the profile is already in view, then the screen shakes to remind the user.  Finally, searching for tweets is supported directly from the ActionBar.  The UI has been styled to have a similar look and feel to today's Twitter client.
 
-Time spent: 33 hours spent in total
+Time spent: 36 hours spent in total
 
 Completed required user stories:
 
@@ -25,10 +25,10 @@ Completed optional user stories:
 * [x] Advanced: User can take favorite (and unfavorite) or reweet actions on a tweet
 * [x] Advanced: Improve the user interface and theme the app to feel twitter branded
 * [x] Advanced: User can search for tweets matching a particular query and see results
+* [x] User can view following / followers list through the profile
 
 Optional Stories not completed:
 
-* [ ] User can view following / followers list through the profile
 * [ ] Advanced: Robust error handling, check if internet is available, handle error cases, network failures
 * [ ] Advanced: When a network request is sent, user sees an indeterminate progress indicator
 * [ ] Bonus: User can view their direct messages (or send new ones)

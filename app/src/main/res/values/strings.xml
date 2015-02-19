@@ -22,5 +22,8 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search Twitter</string>
     <string name="title_activity_search">Search</string>
+    <string name="title_activity_users_list">UsersListActivity</string>
+    <string name="title_following">Following</string>
+    <string name="title_followers">Followers</string>
 
 </resources>

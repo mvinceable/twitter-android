@@ -19,7 +19,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
-public class ProfileActivity extends TimelineActivity {
+public class ProfileActivity extends TimelineActivity implements UserTimelineFragment.UserTimelineCallback {
     private String screenName;
     UserTimelineFragment fragmentUserTimeline;
 
@@ -53,6 +53,10 @@ public class ProfileActivity extends TimelineActivity {
                     profileBannerUrl,
                     statusesCount,
                     description);
+
+            // Set callback for this fragment
+            fragmentUserTimeline.setCallback(this);
+
             // Display user timeline fragment within this activity (dynamically)
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flContainer, fragmentUserTimeline);
@@ -105,9 +109,12 @@ public class ProfileActivity extends TimelineActivity {
                 // 1. Optimistically create a tweet object and add it to the listview
                 String body = data.getStringExtra("body");
                 final Tweet tweet = new Tweet(User.getCurrentUser(), body);
-//                // Optimistic update only for home timeline
-//                fragmentUserTimeline.add(0, tweet);
-//                fragmentUserTimeline.notifyDataSetChanged();
+                // Optimistic update only for current user's profile
+                User currentUser = User.getCurrentUser();
+                if (currentUser != null && screenName.equals(currentUser.getScreenName())) {
+                    fragmentUserTimeline.add(0, tweet);
+                    fragmentUserTimeline.notifyDataSetChanged();
+                }
                 // 2. Post the tweet to twitter
                 TwitterApplication.getRestClient().postReply(body, data.getLongExtra("replyToId", 0), new JsonHttpResponseHandler() {
                     @Override
@@ -128,5 +135,21 @@ public class ProfileActivity extends TimelineActivity {
             // Update the adapter in case states changed
             fragmentUserTimeline.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void showFollowing() {
+        Intent i = new Intent(this, UsersListActivity.class);
+        i.putExtra("type", "following");
+        i.putExtra("screenName", screenName);
+        startActivity(i);
+    }
+
+    @Override
+    public void showFollowers() {
+        Intent i = new Intent(this, UsersListActivity.class);
+        i.putExtra("type", "followers");
+        i.putExtra("screenName", screenName);
+        startActivity(i);
     }
 }

@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.TweetsArrayAdapter;
+import com.codepath.apps.mysimpletweets.adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
@@ -176,7 +176,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
                             tweet.setWithJSON(response);
                             // Save the tweet
                             tweet.save();
-                            Toast.makeText(TimelineActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(TimelineActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -192,12 +192,12 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
                             tweet.setWithJSON(response);
                             // Save the tweet
                             tweet.save();
-                            Toast.makeText(TimelineActivity.this, "success replying from timeline", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(TimelineActivity.this, "success replying from timeline", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            Toast.makeText(TimelineActivity.this, "Failed posting reply", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(TimelineActivity.this, "Failed posting reply", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -218,6 +218,7 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
     @Override
     public void showDetails(Tweet tweet, Tweet tweetToDisplay) {
         Intent i = new Intent(this, TweetDetailsActivity.class);
+        User currentUser = User.getCurrentUser();
         User u = tweetToDisplay.getUser();
         i.putExtra("name", u.getName());
         i.putExtra("userName", u.getScreenName());
@@ -235,6 +236,10 @@ public class TimelineActivity extends ActionBarActivity implements TweetsArrayAd
         i.putExtra("retweeted", tweet.isRetweeted());
         i.putExtra("favorited", tweetToDisplay.isFavorited());
         i.putExtra("mediaUrl", tweetToDisplay.getMediaUrl());
+        // If a retweet not by you
+        if (tweet != tweetToDisplay && (currentUser == null || !currentUser.getScreenName().equals(tweet.getUser().getScreenName()))) {
+            i.putExtra("retweetedBy", tweet.getUser().getName());
+        }
         Tweet.setTweetShowingDetails(tweet);
         startActivityForResult(i, DETAILS_REQUEST_CODE);
     }

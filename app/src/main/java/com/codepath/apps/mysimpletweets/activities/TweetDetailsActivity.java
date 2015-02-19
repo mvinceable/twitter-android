@@ -33,6 +33,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
     ImageButton ibRetweet;
     ImageButton ibFavorite;
     ImageView ivEntity;
+    TextView tvRetweeted;
     long uid;
     String userName;
     String description;
@@ -47,6 +48,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
     boolean retweeted;
     boolean favorited;
     String mediaUrl;
+    String retweetedBy;
 
     public final static int REPLY_REQUEST_CODE = 70;
 
@@ -71,6 +73,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
         retweeted = i.getBooleanExtra("retweeted", false);
         favorited = i.getBooleanExtra("favorited", false);
         mediaUrl = i.getStringExtra("mediaUrl");
+        retweetedBy = i.getStringExtra("retweetedBy");
 
         setupViews();
     }
@@ -86,6 +89,7 @@ public class TweetDetailsActivity extends ActionBarActivity {
         ibRetweet = (ImageButton) findViewById(R.id.ibRetweet);
         ibFavorite = (ImageButton) findViewById(R.id.ibFavorite);
         ivEntity = (ImageView) findViewById(R.id.ivEntity);
+        tvRetweeted = (TextView) findViewById(R.id.tvRetweeted);
 
         Intent i = getIntent();
         tvName.setText(name);
@@ -94,6 +98,13 @@ public class TweetDetailsActivity extends ActionBarActivity {
         Picasso.with(this).load(profileImageUrl).into(ivProfileImage);
         tvBody.setText(i.getStringExtra("body"));
         tvTime.setText(i.getStringExtra("time"));
+
+        if (retweetedBy != null) {
+            tvRetweeted.setText(retweetedBy + " retweeted");
+            ivEntity.setVisibility(View.VISIBLE);
+        } else {
+            tvRetweeted.setVisibility(View.GONE);
+        }
 
         if (mediaUrl != null) {
             ivEntity.setImageResource(android.R.color.transparent); // clear out the old image for a recycled view

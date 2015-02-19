@@ -53,6 +53,11 @@ public class UserTimelineFragment extends TweetsListFragment {
      */
     private PagerAdapter mPagerAdapter;
 
+    /**
+     * Callback to show following and followers lists
+     */
+    private UserTimelineCallback callback;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
@@ -80,6 +85,24 @@ public class UserTimelineFragment extends TweetsListFragment {
         tvTweets.setText(User.getFriendlyCount(b.getInt("statuses_count")));
         tvFollowers.setText(User.getFriendlyCount((b.getInt("followers_count"))));
         tvFollowing.setText(User.getFriendlyCount(b.getInt("friends_count")));
+
+        tvFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.showFollowers();
+                }
+            }
+        });
+
+        tvFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.showFollowing();
+                }
+            }
+        });
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) v.findViewById(R.id.viewpager);
@@ -249,5 +272,14 @@ public class UserTimelineFragment extends TweetsListFragment {
                 mPager.setCurrentItem(0);
             }
         }
+    }
+
+    public void setCallback(UserTimelineCallback callback){
+        this.callback = callback;
+    }
+
+    public interface UserTimelineCallback {
+        public void showFollowing();
+        public void showFollowers();
     }
 }

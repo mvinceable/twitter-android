@@ -23,7 +23,6 @@ public class ProfileInfoFragment extends Fragment {
         ImageView ivProfileImage = (ImageView) v.findViewById(R.id.ivProfileImage);
         TextView tvName = (TextView) v.findViewById(R.id.tvName);
         TextView tvUserName = (TextView) v.findViewById(R.id.tvUserName);
-        ImageView ivProfileBanner = (ImageView) v.findViewById(R.id.ivProfileBanner);
 
         Bundle b = getArguments();
         Picasso.with(getActivity()).load(b.getString("profile_image_url")).into(ivProfileImage);

@@ -199,6 +199,7 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
+    // Get tweets for query older than max_id
     public void getTweetsForQueryBeforeTweet(String query, Tweet tweet, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("search/tweets.json");
         // Specify the params
@@ -209,6 +210,36 @@ public class TwitterClient extends OAuthBaseClient {
         params.put("include_my_retweet", 1);
         // Subtract 1 from uid so it's not included in the response
         params.put("max_id", tweet.getUid() - 1);
+        // Execute the request
+        getClient().get(apiUrl, params, handler);
+    }
+
+    // Get followers
+    // https://api.twitter.com/1.1/followers/list.json
+    public void getFollowers(String screenName, String cursor, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("followers/list.json");
+        // Specify the params
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("screen_name", screenName);
+        if (cursor != null) {
+            params.put("cursor", cursor);
+        }
+        // Execute the request
+        getClient().get(apiUrl, params, handler);
+    }
+
+    // Get friends
+    // https://api.twitter.com/1.1/friends/list.json
+    public void getFollowing(String screenName, String cursor, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("friends/list.json");
+        // Specify the params
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("screen_name", screenName);
+        if (cursor != null) {
+            params.put("cursor", cursor);
+        }
         // Execute the request
         getClient().get(apiUrl, params, handler);
     }

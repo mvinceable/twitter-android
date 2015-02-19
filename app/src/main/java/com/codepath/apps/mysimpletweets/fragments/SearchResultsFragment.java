@@ -38,6 +38,7 @@ public class SearchResultsFragment extends TweetsListFragment {
     // Send an API request to get the timeline json
     // Fill the listview by creating the tweet objects from the json
     protected void populateTimeline() {
+        clear();
         client.getTweetsForQuery(query, new JsonHttpResponseHandler() {
             // SUCCESS
             @Override
@@ -46,7 +47,6 @@ public class SearchResultsFragment extends TweetsListFragment {
                 // DESERIALIZE JSON
                 // CREATE MODELS AND ADD THEM TO THE ADAPTER
                 // LOAD THE MODEL DATA INTO LISTVIEW
-                clear();
                 try {
                     addAll(Tweet.fromJSONArray(json.getJSONArray("statuses")));
                 } catch (JSONException e) {

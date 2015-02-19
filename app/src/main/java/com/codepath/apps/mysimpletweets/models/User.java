@@ -6,8 +6,11 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by mvince on 2/8/15.
@@ -106,6 +109,28 @@ public class User extends Model {
         // Return a user
         return u;
     }
+
+    // User.fromJSONArray([ { ... }, { ... } ] => List<User>
+    public static ArrayList<User> fromJSONArray(JSONArray jsonArray) {
+        ArrayList<User> users = new ArrayList<>();
+        // Iterate the json array and create users
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject userJson;
+            try {
+                userJson = jsonArray.getJSONObject(i);
+                User user = User.fromJSON(userJson);
+                if (user != null) {
+                    users.add(user);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        // Return the finished list
+        return users;
+    }
+
 
     public static void setCurrentUser(User currentUser) {
         User.currentUser = currentUser;

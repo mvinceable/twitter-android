@@ -17,13 +17,26 @@
             android:paddingRight="10dp"
             android:paddingTop="10dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="someone retweeted"
+                android:id="@+id/tvRetweeted"
+                android:drawableLeft="@drawable/retweet"
+                android:drawablePadding="15dp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/light_gray"
+                android:textSize="12sp"
+                android:layout_marginLeft="38dp"
+                android:layout_marginBottom="8dp" />
+
             <ImageView
                 android:id="@+id/ivProfileImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
+                android:layout_below="@+id/tvRetweeted"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="16dp"
                 android:clickable="true"
@@ -33,7 +46,7 @@
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/ivProfileImage"
+                android:layout_below="@+id/tvRetweeted"
                 android:layout_toEndOf="@+id/ivProfileImage"
                 android:layout_toRightOf="@+id/ivProfileImage"
                 android:text="First Last"
